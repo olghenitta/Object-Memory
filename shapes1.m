@@ -20,7 +20,7 @@ white = WhiteIndex(screenNumber);
 black = BlackIndex(screenNumber);
 bgColor = [0.98 0.78 0.97];
 % Open an on screen window
-[window, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColor); %black);
+[window, windowRect] = PsychImaging('OpenWindow', screenNumber, bgColor, [100 100 1100 900]); %black);
 
 % Get the size of the on screen window
 [screenXpixels, screenYpixels] = Screen('WindowSize', window);
@@ -52,7 +52,7 @@ rectImage = rect72out - rectDecrease*2;
 arcColor2 = [0.95 0.97 0.59];
 arcColor1 = [0.78 0.96 0.99];
 dotColor  = [0.91 0.70 0.97];
-
+draftColor = [0.5 0 0.5];
 % Take a random ref stimulus
 refStim = 7; % This is top vertical, basis is calculated from this point and then is rotated
 stim1 =  4; %randi([1 np/2]);
@@ -107,17 +107,22 @@ lineCoords = [xyRotatedIn(1) xyRotatedOut(1) xy2RotatedIn(1) xy2RotatedOut(1) xy
 % Width of the lines for our frame
 lineWidth = 3;
 
-% Screen('FrameRect', window, dotColor, rect72out, lineWidth);
-% Screen('FrameRect', window, dotColor, rect72in, lineWidth);
+% Screen('FrameArc',window,arcColor1,rect72out, 0-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth) 
+% Screen('FrameArc',window,arcColor1,rect72in,  0-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth) 
+% 
+% Screen('FrameArc',window,arcColor2,rect72out, 180-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth)
+% Screen('FrameArc',window,arcColor2,rect72in,  180-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth)
+Screen('FillArc',window,arcColor1,rect72out, 0-leftover+rotateAll, 135+leftover*2)
+Screen('FillArc',window,draftColor,rect72in, 0-leftover+rotateAll, 135+leftover*2)
 
-Screen('FrameArc',window,arcColor1,rect72out, 0-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth) 
-Screen('FrameArc',window,arcColor1,rect72in,  0-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth) 
+Screen('FillArc',window,arcColor2,rect72out,180-leftover+rotateAll, 135+leftover*2)
+Screen('FillArc',window,draftColor,rect72in,180-leftover+rotateAll, 135+leftover*2)
 
-Screen('FrameArc',window,arcColor2,rect72out, 180-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth)
-Screen('FrameArc',window,arcColor2,rect72in,  180-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth)
+Screen('FrameRect', window, dotColor, rect72out, lineWidth);
+Screen('FrameRect', window, dotColor, rect72in, lineWidth);
 
 %Screen('DrawLines', window, line_coords, lineWidth, arcColor1) %, [xCenter yCenter]);
-Screen('DrawLines', window, lineCoords, lineWidth, [arcColor1' arcColor1' arcColor1' arcColor1' arcColor2' arcColor2' arcColor2' arcColor2']) %,
+Screen('DrawLines', window, lineCoords, lineWidth, [draftColor' draftColor' draftColor' draftColor' arcColor2' arcColor2' arcColor2' arcColor2']) %,
 %Screen('FrameRect', window, rectColor, rect2, lineWidth);
 %Screen('FrameArc',window,arcColor,rect3, 0, 180, lineWidth, lineWidth)
 %Screen('FrameArc',window,arcColor,rect2, 0, 180, lineWidth, lineWidth)
@@ -126,8 +131,8 @@ Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dot
 
 % Flip to the screen
 Screen('Flip', window);
-imageArray = Screen('GetImage', window, rectImage);
-imwrite(imageArray, 'princess_image8.jpg')
+% imageArray = Screen('GetImage', window, rectImage);
+% imwrite(imageArray, 'princess_image8.jpg')
 
 KbStrokeWait;
 
