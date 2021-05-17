@@ -29,20 +29,20 @@ bgColor = [0.98 0.78 0.97];
 [xCenter, yCenter] = RectCenter(windowRect);
 
 % Svens's variables
-design.tarecc   = 6; 
-np              = 8;
-ang             = 0:2/np*pi:(2-1/np)*pi; 
+design.tarecc   = 4; 
+nstim           = 8;
+ang             = 0:2/nstim*pi:(2-1/nstim)*pi; 
 visual.ppd      = 51.556;
 [dpx, dpy]      = pol2cart(ang,design.tarecc*visual.ppd);
 design.stiPosi  = round([dpx' dpy']);   % 1 is right relative center then clockwise     
 % Parameters for drawing stuff
-wurstRadDeg     = 1.5; % how far from ref. points my arcs are located (how thick is the wurst) 
+wurstRadDeg     = 1; % how far from ref. points my arcs are located (how thick is the wurst) 
 wurstRadPix     = visual.ppd*wurstRadDeg;  
-leftover        = 10.0;                 % degrees for arc ends relative ref points
-
+leftover        = 5.0;                 % degrees for arc ends relative ref points
+segment1 = 360/nstim;
 %rectangle relative stimulus Position
-rect72P = [design.stiPosi(5,1)-wurstRadPix design.stiPosi(7,2)-wurstRadPix...
-    design.stiPosi(1,1)+wurstRadPix  design.stiPosi(3,2)+wurstRadPix];
+rect72P = [design.stiPosi(nstim-(nstim/2-1),1)-wurstRadPix design.stiPosi(nstim-1,2)-wurstRadPix...
+    design.stiPosi(1,1)+wurstRadPix  design.stiPosi((nstim/2-1),2)+wurstRadPix];
 rect72out = [xCenter yCenter xCenter yCenter] + rect72P;
 rectDecrease = [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix]*2;
 rect72in = rect72out +rectDecrease;
@@ -54,26 +54,25 @@ arcColor1 = [0.78 0.96 0.99];
 dotColor  = [0.91 0.70 0.97];
 draftColor = [0.5 0 0.5];
 % Take a random ref stimulus
-refStim = 7; % This is top vertical, basis is calculated from this point and then is rotated
-stim1 =  4; %randi([1 np/2]);
+stim1 =  randi([1 nstim/2]);
 switch stim1
     case 1
         rotateAll = 0;
     case 2
-        rotateAll = 45;
+        rotateAll = segment1;
     case 3 
-        rotateAll = 90;
+        rotateAll = segment1*2;
     case 4
-        rotateAll = 135;
+        rotateAll = segment1*3;
 end
-rotateAll = 45;
-lineWidth = 3;
-    
-Screen('FillArc',window,arcColor1,rect72out, 0-leftover+rotateAll, 135+leftover*2)
-Screen('FillArc',window,draftColor,rect72in, 0-leftover+rotateAll, 135+leftover*2)
 
-Screen('FillArc',window,arcColor2,rect72out,180-leftover+rotateAll, 135+leftover*2)
-Screen('FillArc',window,draftColor,rect72in,180-leftover+rotateAll, 135+leftover*2)
+lineWidth = 3;
+arcAngle = segment1*(nstim/2-1);    
+Screen('FillArc',window,arcColor1,rect72out, 0-leftover+rotateAll, arcAngle+leftover*2)
+Screen('FillArc',window,draftColor,rect72in, 0-leftover+rotateAll, arcAngle+leftover*2)
+
+Screen('FillArc',window,arcColor2,rect72out,180-leftover+rotateAll, arcAngle+leftover*2)
+Screen('FillArc',window,draftColor,rect72in,180-leftover+rotateAll, arcAngle+leftover*2)
 
 Screen('FrameRect', window, dotColor, rect72out, lineWidth);
 Screen('FrameRect', window, dotColor, rect72in, lineWidth);
