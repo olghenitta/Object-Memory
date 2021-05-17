@@ -66,52 +66,9 @@ switch stim1
     case 4
         rotateAll = 135;
 end
-% if stim1 == 7
-%     rotateAll = 45;
-% else
-%     rotateAll = 0;
-% end
-
-    
-% Line coordinates
-leftoverExp = 10;
-line_coords = [xCenter  design.stiPosi(refStim,1)+xCenter; yCenter+design.stiPosi(refStim,2)+wurstRadPix design.stiPosi(refStim,2)-wurstRadPix+yCenter];
-
-% Rotation Matrix for lines
-rotation1 = [cosd(-leftoverExp+rotateAll) -sind(-leftoverExp+rotateAll); sind(-leftoverExp+rotateAll) cosd(-leftoverExp+rotateAll)];
-
-xyPointOut = ceil([design.stiPosi(refStim,1) design.stiPosi(refStim,2)-wurstRadPix]');
-xyPointIn = ceil([design.stiPosi(refStim,1) design.stiPosi(refStim,2)+wurstRadPix]');
-
-xyRotatedOut = ceil(rotation1*xyPointOut)+ [xCenter;yCenter];
-xyRotatedIn = ceil(rotation1*xyPointIn)+ [xCenter;yCenter];
-
-rotation2 = [cosd(135+leftoverExp+rotateAll) -sind(135+leftoverExp+rotateAll); sind(135+leftoverExp+rotateAll) cosd(135+leftoverExp+rotateAll)];
-
-xy2RotatedOut = ceil(rotation2*xyPointOut)+ [xCenter;yCenter];
-xy2RotatedIn = ceil(rotation2*xyPointIn)+ [xCenter;yCenter];
-
-rotation3 = [cosd(-45+leftoverExp+rotateAll) -sind(-45+leftoverExp+rotateAll); sind(-45+leftoverExp+rotateAll) cosd(-45+leftoverExp+rotateAll)];
-
-xy3RotatedOut = ceil(rotation3*xyPointOut)+ [xCenter;yCenter];
-xy3RotatedIn = ceil(rotation3*xyPointIn)+ [xCenter;yCenter];
-
-rotation4 = [cosd(180-leftoverExp+rotateAll) -sind(180-leftoverExp+rotateAll); sind(180-leftoverExp+rotateAll) cosd(180-leftoverExp+rotateAll)];
-
-xy4RotatedOut = ceil(rotation4*xyPointOut)+ [xCenter;yCenter];
-xy4RotatedIn = ceil(rotation4*xyPointIn)+ [xCenter;yCenter];
-
-
-lineCoords = [xyRotatedIn(1) xyRotatedOut(1) xy2RotatedIn(1) xy2RotatedOut(1) xy3RotatedIn(1) xy3RotatedOut(1) xy4RotatedIn(1) xy4RotatedOut(1);
-    xyRotatedIn(2) xyRotatedOut(2) xy2RotatedIn(2) xy2RotatedOut(2) xy3RotatedIn(2) xy3RotatedOut(2) xy4RotatedIn(2) xy4RotatedOut(2)];
-% Width of the lines for our frame
+rotateAll = 45;
 lineWidth = 3;
-
-% Screen('FrameArc',window,arcColor1,rect72out, 0-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth) 
-% Screen('FrameArc',window,arcColor1,rect72in,  0-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth) 
-% 
-% Screen('FrameArc',window,arcColor2,rect72out, 180-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth)
-% Screen('FrameArc',window,arcColor2,rect72in,  180-leftover+rotateAll, 135+leftover*2, lineWidth, lineWidth)
+    
 Screen('FillArc',window,arcColor1,rect72out, 0-leftover+rotateAll, 135+leftover*2)
 Screen('FillArc',window,draftColor,rect72in, 0-leftover+rotateAll, 135+leftover*2)
 
@@ -120,12 +77,6 @@ Screen('FillArc',window,draftColor,rect72in,180-leftover+rotateAll, 135+leftover
 
 Screen('FrameRect', window, dotColor, rect72out, lineWidth);
 Screen('FrameRect', window, dotColor, rect72in, lineWidth);
-
-%Screen('DrawLines', window, line_coords, lineWidth, arcColor1) %, [xCenter yCenter]);
-Screen('DrawLines', window, lineCoords, lineWidth, [draftColor' draftColor' draftColor' draftColor' arcColor2' arcColor2' arcColor2' arcColor2']) %,
-%Screen('FrameRect', window, rectColor, rect2, lineWidth);
-%Screen('FrameArc',window,arcColor,rect3, 0, 180, lineWidth, lineWidth)
-%Screen('FrameArc',window,arcColor,rect2, 0, 180, lineWidth, lineWidth)
 
 Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
 
