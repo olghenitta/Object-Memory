@@ -30,23 +30,20 @@ bgColor = [0.98 0.78 0.97];
 
 % Svens's variables
 visual.ppd      = 51.556;
-
 nstim           = 8;
 design.tarecc   = 6; %dva
 tareccPix       = design.tarecc*visual.ppd;
 ang             = 0:2/nstim*pi:(2-1/nstim)*pi; 
 [dpx, dpy]      = pol2cart(ang,design.tarecc*visual.ppd);
 design.stiPosi  = round([dpx' dpy']);   % 1 is right relative center then clockwise     
+
 % Parameters for drawing stuff
 wurstRadDeg     = 1; % how far from ref. points my arcs are located (how thick is the wurst) 
 wurstRadPix     = visual.ppd*wurstRadDeg;  
-
 segment1 = 360/nstim;
 leftover        = 0.2* segment1;                 % degrees for arc ends relative ref points
+
 %rectangle relative stimulus Position
-% rect72P = [design.stiPosi(nstim-(nstim/2-1),1)-wurstRadPix design.stiPosi(nstim-1,2)-wurstRadPix...
-%     design.stiPosi(1,1)+wurstRadPix  design.stiPosi((nstim/2-1),2)+wurstRadPix];
-max(design.stiPosi(1,:))
 rect72out = [xCenter yCenter xCenter yCenter] - [tareccPix tareccPix -tareccPix  -tareccPix] - [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix];
 rectDecrease = [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix]*2;
 rect72in = rect72out +rectDecrease;
@@ -81,8 +78,18 @@ Screen('FrameRect', window, dotColor, rect72out, lineWidth);
 Screen('FrameRect', window, dotColor, rect72in, lineWidth);
 Screen('FillOval', window, draftColor, rect72in)
 
-Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
+% Screen('FillOval', window, [0.3 0 0.5], ...
+%     [-wurstRadPix -wurstRadPix +wurstRadPix +wurstRadPix]+...
+%     [design.stiPosi(stim1,1) design.stiPosi(stim1,2) design.stiPosi(stim1,1) design.stiPosi(stim1,2)]+...
+%     [xCenter yCenter xCenter yCenter])
 
+theta = segment1*3;
+R = [cosd(theta) -sind(theta); sind(theta) cosd(theta)];
+newCenter = (R*(design.stiPosi(1,:))')';
+newOval = [newCenter + [-wurstRadPix -wurstRadPix] newCenter + [wurstRadPix wurstRadPix]];
+
+Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
+Screen('FillOval', window, [0.3 0 0.5],[xCenter yCenter xCenter yCenter]+newOval)
 % Flip to the screen
 Screen('Flip', window);
 % imageArray = Screen('GetImage', window, rectImage);
