@@ -78,16 +78,13 @@ Screen('FrameRect', window, dotColor, rect72out, lineWidth);
 Screen('FrameRect', window, dotColor, rect72in, lineWidth);
 Screen('FillOval', window, draftColor, rect72in)
 
-% Screen('FillOval', window, [0.3 0 0.5], ...
-%     [-wurstRadPix -wurstRadPix +wurstRadPix +wurstRadPix]+...
-%     [design.stiPosi(stim1,1) design.stiPosi(stim1,2) design.stiPosi(stim1,1) design.stiPosi(stim1,2)]+...
-%     [xCenter yCenter xCenter yCenter])
-
-theta = segment1*3;
+theta = segment1*stim1+leftover;
 R = [cosd(theta) -sind(theta); sind(theta) cosd(theta)];
 newCenter = (R*(design.stiPosi(1,:))')';
 newOval = [newCenter + [-wurstRadPix -wurstRadPix] newCenter + [wurstRadPix wurstRadPix]];
 
+theta2 = arcAngle+leftover*2;
+R = [cosd(theta2) -sind(theta2); sind(theta2) cosd(theta2)];
 Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
 Screen('FillOval', window, [0.3 0 0.5],[xCenter yCenter xCenter yCenter]+newOval)
 % Flip to the screen
