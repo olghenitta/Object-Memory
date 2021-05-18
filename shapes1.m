@@ -54,7 +54,7 @@ arcColor1 = [0.78 0.96 0.99];
 dotColor  = [0.91 0.70 0.97];
 draftColor = bgColor;%[0.5 0 0.5];
 % Take a random ref stimulus
-stim1 = 1;%randi([1 nstim/2]);
+stim1 = 4;%randi([1 nstim/2]);
 switch stim1
     case 1
         rotateAll = 0;
@@ -83,10 +83,12 @@ R = [cosd(theta) -sind(theta); sind(theta) cosd(theta)];
 newCenter = (R*(design.stiPosi(1,:))')';
 newOval = [newCenter + [-wurstRadPix -wurstRadPix] newCenter + [wurstRadPix wurstRadPix]];
 
-theta2 = arcAngle+leftover*2;
-R = [cosd(theta2) -sind(theta2); sind(theta2) cosd(theta2)];
+theta2 = -arcAngle-leftover*2;
+R2 = [cosd(theta2) -sind(theta2); sind(theta2) cosd(theta2)];
+newCenter2 = (R2*newCenter')';
+newOval2 = [newCenter2 + [-wurstRadPix -wurstRadPix] newCenter2 + [wurstRadPix wurstRadPix]];
 Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
-Screen('FillOval', window, [0.3 0 0.5],[xCenter yCenter xCenter yCenter]+newOval)
+Screen('FillOval', window, [0.3 0 0.5; 0.3 0 0.2]',[([xCenter yCenter xCenter yCenter]+newOval); ([xCenter yCenter xCenter yCenter]+newOval2)]')
 % Flip to the screen
 Screen('Flip', window);
 % imageArray = Screen('GetImage', window, rectImage);
