@@ -1,6 +1,5 @@
 % To do:
-% Now arcs are hardcoded for ref stim # 7 (top)
-% they should work for four ref stim 
+% Function
 sca;
 close all;
 clearvars;
@@ -20,13 +19,13 @@ white = WhiteIndex(screenNumber);
 black = BlackIndex(screenNumber);
 
 % Set the color of the rect to nice and princessy
-bgColor = [0.98 0.78 0.97];
+bgColor = [0.7804 0.8275 0.8431];
 % Randomization of the shape color will happen in genDesign
-arcColors = [0.95 0.97 0.59; 0.78 0.96 0.99];
+arcColors = [0.4784 0.6275 0.8039;  0.4549 0.5961 0.4314];
 ColorOrder = randperm(2);
 arcColor1 = arcColors(ColorOrder(1), :);
 arcColor2 = arcColors(ColorOrder(2), :);
-dotColor  = [0.91 0.70 0.97];
+dotColor  = [0.1922 0.2353 0.2980];
 draftColor = [0.5 0 0.5];%bgColor;%;
 
 % Open an on screen window
@@ -55,45 +54,19 @@ design.stiPosi  = round([dpx' dpy']);   % 1 is right relative center then clockw
 segment1        = 360/nstim;
 leftover        = 0.2* segment1;            % how far from the stimulus centers arcs extend 
 
-%rectangle relative stimulus Position
-rect72out = [xCenter yCenter xCenter yCenter] - [tareccPix tareccPix -tareccPix  -tareccPix] - [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix];
+% rectangle relative stimulus Position
+outerSquare = [xCenter yCenter xCenter yCenter] - [tareccPix tareccPix -tareccPix  -tareccPix] - [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix];
 rectDecrease = [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix]*2;
-rect72in = rect72out +rectDecrease;
+innerSquare = outerSquare +rectDecrease;
 
-
-% Take a random ref stimulus
+%Here drawing beginns:
+% Take a random stimulus as a reference point for the first arc
 stim1 = randi([1 nstim/2]);
-% switch stim1
-%     case 1
-%         rotateAll = 0;
-%     case 2
-%         rotateAll = segment1;
-%     case 3 
-%         rotateAll = segment1*2;
-%     case 4
-%         rotateAll = segment1*3;
-% end
 
 lineWidth = 3;
 arcAngle = segment1*(nstim/2-1);    
 
-% theta = segment1*stim1+leftover*0.9;
-% R = [cosd(theta) -sind(theta); sind(theta) cosd(theta)];
-% newCenter = (R*(design.stiPosi(1,:))')';
-% newOval = [newCenter + [-wurstRadPix -wurstRadPix] newCenter + [wurstRadPix wurstRadPix]];
-% 
-% theta2 = -arcAngle-leftover*1.8;
-% R2 = [cosd(theta2) -sind(theta2); sind(theta2) cosd(theta2)];
-% newCenter2 = (R2*newCenter')';
-% newOval2 = [newCenter2 + [-wurstRadPix -wurstRadPix] newCenter2 + [wurstRadPix wurstRadPix]];
 % Screen('FillOval', window, [arcColor1; arcColor1]',[([xCenter yCenter xCenter yCenter]+newOval); ([xCenter yCenter xCenter yCenter]+newOval2)]')
-% Screen('FillArc',window,arcColor1,rect72out, 0-leftover+rotateAll, arcAngle+leftover*2)
-% %Screen('FillArc',window,draftColor,rect72in, 0-leftover+rotateAll, arcAngle+leftover*2)
-% 
-% Screen('FillArc',window,arcColor2,rect72out,180-leftover+rotateAll, arcAngle+leftover*2)
-% %Screen('FillArc',window,draftColor,rect72in,180-leftover+rotateAll, arcAngle+leftover*2)
-% Screen('FillOval', window, bgColor, rect72in)
-
 refStimPos1 = design.stiPosi(stim1,:); %later will be generalized
 center4 = [xCenter yCenter xCenter yCenter];
 
@@ -105,9 +78,9 @@ refStimPos2 = design.stiPosi(stim1+1,:);
 stimReArc2 = atan2d(refStimPos2(1), -refStimPos2(2));% arc is drawn clockwise from vertical 
 startArc2 = stimReArc2 -leftover;
 
-Screen('FillArc',window,arcColor1,rect72out, startArc1, entireArc)
-Screen('FillArc',window,arcColor2,rect72out, startArc2, entireArc)
-Screen('FillOval', window, bgColor, rect72in)
+Screen('FillArc',window,arcColor1,outerSquare, startArc1, entireArc)
+Screen('FillArc',window,arcColor2,outerSquare, startArc2, entireArc)
+Screen('FillOval', window, bgColor, innerSquare)
 
 %Arc Ends
 %rotate first ref point
@@ -133,8 +106,6 @@ Screen('FillOval', window, arcColor2, newOval2+center4)
 Screen('FillOval', window, arcColor2, newOval3+center4)
 Screen('FillOval', window, arcColor1, newOval4+center4)
 Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
-
-
 
 % Flip to the screen
 Screen('Flip', window);
