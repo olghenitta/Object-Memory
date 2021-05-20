@@ -39,10 +39,10 @@ draftColor = [0.5 0 0.5];%bgColor;%;
 visual.ppd      = 51.556;
 
 % stimulus variables later will be defined as a function input
-nstim           = 6;
+nstim           = 8;
 design.tarecc   = 6; %dva
 tareccPix       = round(design.tarecc*visual.ppd);
-wurstRadDeg     = 1; % how far from ref. points my arcs are located (how thick is the wurst) 
+wurstRadDeg     = 1.1; % how far from ref. points my arcs are located (how thick is the wurst) 
 wurstRadPix     = visual.ppd*wurstRadDeg;  
 
 ang             = 0:2/nstim*pi:(2-1/nstim)*pi; 
@@ -52,7 +52,7 @@ design.stiPosi  = round([dpx' dpy']);   % 1 is right relative center then clockw
 % Parameters for drawing stuff
 
 segment1        = 360/nstim;
-leftover        = 0.2* segment1;            % how far from the stimulus centers arcs extend 
+leftover        = 0.01* segment1;            % how far from the stimulus centers arcs extend 
 
 % rectangle relative stimulus Position
 outerSquare = [xCenter yCenter xCenter yCenter] - [tareccPix tareccPix -tareccPix  -tareccPix] - [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix];
