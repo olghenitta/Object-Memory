@@ -59,14 +59,12 @@ outerSquare = [xCenter yCenter xCenter yCenter] - [tareccPix tareccPix -tareccPi
 rectDecrease = [wurstRadPix wurstRadPix -wurstRadPix -wurstRadPix]*2;
 innerSquare = outerSquare +rectDecrease;
 
-%Here drawing beginns:
 % Take a random stimulus as a reference point for the first arc
 stim1 = randi([1 nstim/2]);
 
 lineWidth = 3;
 arcAngle = segment1*(nstim/2-1);    
 
-% Screen('FillOval', window, [arcColor1; arcColor1]',[([xCenter yCenter xCenter yCenter]+newOval); ([xCenter yCenter xCenter yCenter]+newOval2)]')
 refStimPos1 = design.stiPosi(stim1,:); %later will be generalized
 center4 = [xCenter yCenter xCenter yCenter];
 
