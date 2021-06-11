@@ -78,8 +78,8 @@ refStimPos2 = design.stiPosi(stim1+1,:);
 stimReArc2 = atan2d(refStimPos2(1), -refStimPos2(2));% arc is drawn clockwise from vertical 
 startArc2 = stimReArc2 -leftover;
 
-Screen('FillArc',window,arcColor1,outerSquare, startArc1, entireArc)
-Screen('FillArc',window,arcColor2,outerSquare, startArc2, entireArc)
+Screen('FillArc', window,arcColor1,outerSquare, startArc1, entireArc)
+Screen('FillArc', window,arcColor2,outerSquare, startArc2, entireArc)
 Screen('FillOval', window, bgColor, innerSquare)
 
 %Arc Ends
@@ -109,8 +109,8 @@ Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dot
 
 % Flip to the screen
 Screen('Flip', window);
-% imageArray = Screen('GetImage', window, rectImage);
-% imwrite(imageArray, 'princess_image8.jpg')
+imageArray = Screen('GetImage', window, [0 0 1000 800]);
+imwrite(imageArray, 'new_image.jpg')
 
 
 
