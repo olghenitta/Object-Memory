@@ -1,5 +1,4 @@
-%sca
-%To do:
+% To do:
 % Function
 global visual 
 
@@ -14,7 +13,6 @@ Screen('Preference', 'SkipSyncTests', 2 );
 % Get the screen numbers
 screens = Screen('Screens');
 
-
 % Draw to the external screen if avaliable
 screenNumber = max(screens);
 
@@ -23,7 +21,7 @@ white = WhiteIndex(screenNumber);
 black = BlackIndex(screenNumber);
 
 % Set the color of the rect to nice and princessy
-bgColor = [0.7804 0.8275 0.8431];
+bgColor = 0.8%[0.7804 0.8275 0.8431];
 % Randomization of the shape color will happen in genDesign
 arcColors = [0.4784 0.6275 0.8039;  0.4549 0.5961 0.4314];
 ColorOrder = randperm(2);
@@ -41,7 +39,7 @@ draftColor = [0.5 0 0.5];%bgColor;%;
 % Get the centre coordinate of the window
 [xCenter, yCenter] = RectCenter(windowRect);
 visual.ppd      = 51.556;
-Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,  [1 1 1 1]);
+
 % stimulus variables later will be defined as a function input
 nstim           = 8;
 design.tarecc   = 6; %dva
@@ -110,11 +108,16 @@ Screen('FillOval', window, arcColor2, newOval2+center4)
 Screen('FillOval', window, arcColor2, newOval3+center4)
 Screen('FillOval', window, arcColor1, newOval4+center4)
 Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
+%Playground:
+p.sig = 25
+p.siz = 100
+visual.bgColor = bg.Color
+visual.white = white
 
-myMask = getSomeMask();
-%myMask = getSmoothEdgeMask(p)
+%myMask = getSomeMask();
+myMask = getSmoothEdgeMask(p)
 myTex = Screen('MakeTexture', window, myMask,[],[],2);
-Screen('DrawTexture', window, myTex, [0 0 200 100], [0 0 200 100]);
+Screen('DrawTexture', window, myTex, [0 0 200 200], [0 0 200 200]);
 %  cir(i).mat = getSmoothEdgeMask(td.stim(i).par);
 %         cir(i).tex = Screen('MakeTexture', scr.main, cir(i).mat,[],[],2); 
 
