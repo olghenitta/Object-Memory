@@ -82,9 +82,9 @@ refStimPos2 = design.stiPosi(stim1+1,:);
 stimReArc2 = atan2d(refStimPos2(1), -refStimPos2(2));% arc is drawn clockwise from vertical 
 startArc2 = stimReArc2 -leftover;
 
-Screen('FillArc', window,arcColor1,outerSquare, startArc1, entireArc)
-Screen('FillArc', window,arcColor2,outerSquare, startArc2, entireArc)
-Screen('FillOval', window, bgColor, innerSquare)
+% Screen('FillArc', window,arcColor1,outerSquare, startArc1, entireArc)
+% Screen('FillArc', window,arcColor2,outerSquare, startArc2, entireArc)
+% Screen('FillOval', window, bgColor, innerSquare)
 
 %Arc Ends
 %rotate first ref point
@@ -105,25 +105,33 @@ end
 oval4 = design.stiPosi(index,:)*R2;
 newOval3 = round([[oval3(1) oval3(2)] + [-wurstRadPix -wurstRadPix] [oval3(1) oval3(2)] + [wurstRadPix wurstRadPix]]);
 newOval4 = round([[oval4(1) oval4(2)] + [-wurstRadPix -wurstRadPix] [oval4(1) oval4(2)] + [wurstRadPix wurstRadPix]]);
-Screen('FillOval', window, arcColor1, newOval+center4)
-Screen('FillOval', window, arcColor2, newOval2+center4)
-Screen('FillOval', window, arcColor2, newOval3+center4)
-Screen('FillOval', window, arcColor1, newOval4+center4)
-Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
-
-myMask = getSomeMask();
+% Screen('FillOval', window, arcColor1, newOval+center4)
+% Screen('FillOval', window, arcColor2, newOval2+center4)
+% Screen('FillOval', window, arcColor2, newOval3+center4)
+% Screen('FillOval', window, arcColor1, newOval4+center4)
+% Screen('DrawDots', window, [design.stiPosi(:,1)'; design.stiPosi(:,2)'], 15, dotColor, [xCenter, yCenter]);
+p.siz = 300;
+p.sig = p.siz/2;
+p.MColor = [0.4784 0.6275 0.8039];
+p.bgColor = 0.8;
+myMask = getSomeMask(p);
 %myMask = getSmoothEdgeMask(p)
-myTex = Screen('MakeTexture', window, myMask,[],[],2);
+myTex1 = Screen('MakeTexture', window, myMask.Mask1,[],[],2);
 
-skull = imread('war.png');
+morning = imread('morning.png');
 
-skullTex = Screen('MakeTexture', window, skull);
+morningTex = Screen('MakeTexture', window, morning(1:p.siz,1:2*p.siz,:));
+startX = 0;%160;
+startY = 0;%110;
+movingX = 0;
+movingY = 0;
+Screen('DrawTexture', window, morningTex, [startX startY startX+2*p.siz startY+p.siz], [center4(1)-p.siz center4(2)-p.siz center4(1)+p.siz center4(2)]+[movingX movingY movingX movingY],0);
 
-Screen('DrawTexture', window, skullTex, [410 180 610 380], [center4(1)-100 center4(2)-100 center4(1)+100 center4(2)+100],0);
-Screen('DrawTexture', window, myTex, [0 0 200 200-100], [center4(1)-100 center4(2)-100 center4(1)+100 center4(2)+100-100]);
-Screen('FillOval', window, bgColor, [center4(1)-30 center4(2)-30 center4(1)+30 center4(2)+30])
-Screen('FillRect', window, bgColor, [center4(1)-100 center4(2) center4(1)+100 center4(2)+100])
-%  cir(i).mat = getSmoothEdgeMask(td.stim(i).par);
+Screen('DrawTexture', window, myTex1, [0 0 p.siz*2 p.siz], [center4(1)-p.siz center4(2)-p.siz center4(1)+p.siz center4(2)]+[movingX movingY movingX movingY]);
+
+Screen('FillOval', window, bgColor, [center4(1)-p.siz*0.5 center4(2)-p.siz*0.5 center4(1)+p.siz*0.5 center4(2)+p.siz*0.5]+[movingX movingY movingX movingY])
+% Screen('FillRect', window, bgColor, [center4(1)-p.siz center4(2) center4(1)+p.siz center4(2)+p.siz]+[movingX movingY movingX movingY])
+% %  cir(i).mat = getSmoothEdgeMask(td.stim(i).par);
 %         cir(i).tex = Screen('MakeTexture', scr.main, cir(i).mat,[],[],2); 
 
 % Flip to the screen
